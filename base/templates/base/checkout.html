@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="">
+   <head>
+      <link rel="stylesheet" href="{% static 'style.css' %}" />
+      <title>Movie</title>
+      <meta id="meta" name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+      >
+      <style>
+         * {
+         box-sizing: border-box;
+         }
+         body {
+         background-color: #242333;
+         color: #000000;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         height: 100vh;
+         font-family: 'Lato', sans-serif;
+         margin: 0;
+         }
+         .movie-container select {
+         background-color: #fff;
+         border: 0;
+         border-radius: 5px;
+         font-size: 14px;
+         margin-left: 10px;
+         padding: 5px 15px 5px 15px;
+         -moz-appearance: none;
+         -webkit-appearance: none;
+         appearance: none;
+         }
+         .container {
+         perspective: 1000px;
+         margin-bottom: 30px;
+         }
+
+      </style>
+   </head>
+   <body>
+      </select>
+    </div>
+      <div class="container">
+         <div class="row">
+            <div class="col-lg">
+               <br>
+               <img alt="" src="{{ movie.image_url}}">
+            </div>
+            <div class="col-lg">
+               <br>
+               <div class="card card-body">
+                  <h4>{{movie.name}}</h4>
+                  <hr>
+                  <p>{{movie.description}}</p>
+                  <hr>
+                  <h4>${{movie.price}}</h4>
+                  <hr>
+                  <ul class="showcase">
+                     <li>
+                        <div class="seat"></div>
+                        <small>N/A</small>
+                     </li>
+                     <li>
+                        <div class="seat selected"></div>
+                        <small>Selected</small>
+                     </li>
+                     <li>
+                        <div class="seat occupied"></div>
+                        <small>Occupied</small>
+                      </li>
+                  </ul>
+                  <div class="container">
+                     <div class="screen"></div>
+                     <div class="row">
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                     </div>
+                     <div class="row">
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat "></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                     </div>
+                     <div class="row">
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                     </div>
+                     <div class="row">
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                     </div>
+                     <div class="row">
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                     </div>
+                     <div class="row">
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                     </div>
+                  </div>
+                  <p class="text">
+                     You have selected <span movieid="count">0</span> seats for a price of $<span movieid="total"> 0</span>
+                  </p>
+                  <div id="paypal-button-container"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+      <script>
+         function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+         }
+         var csrftoken = getCookie('csrftoken');
+
+         var total = '{{movie.price}}'
+         var movieId = '{{movie.id}}'
+
+         function completeOrder(){
+         	var url = "{% url 'complete' %}"
+
+         	fetch(url, {
+         		method:'POST',
+         		headers:{
+         			'Content-type':'application/json',
+         			'X-CSRFToken':csrftoken,
+         		},
+         		body:JSON.stringify({'movieId':movieId})
+         	})
+         }
+
+
+              // Render the PayPal button into #paypal-button-container
+              paypal.Buttons({
+
+                  // Set up the transaction
+                  createOrder: function(data, actions) {
+                      return actions.order.create({
+                          purchase_units: [{
+                              amount: {
+                                  value: total
+                              }
+                          }]
+                      });
+                  },
+
+                  // Finalize the transaction
+                  onApprove: function(data, actions) {
+                      return actions.order.capture().then(function(details) {
+                          // Show a success message to the buyer
+                          completeOrder()
+                          alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                      });
+                  }
+
+
+              }).render('#paypal-button-container');
+
+      </script>
+      <script src="{% static 'script.js' %}"></script>
+      <script src="{% static 'backend.js' %}"></script>
+   </body>
+</html>

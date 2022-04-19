@@ -1,0 +1,14 @@
+{{ error }}
+
+{% if movie %}
+    <centre><h1> Search Result Found</h1></centre>
+    <br>
+
+{% for i in movie %}
+ <centre><h1><a href="/searchbar">{{i.name }} : {{i.image_url}} </h1></centre>
+
+
+{% endfor %}
+{% else %}
+    <centre><h1><Not Found</h1></centre>
+{% endif %}
